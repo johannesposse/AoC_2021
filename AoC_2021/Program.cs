@@ -9,62 +9,56 @@ namespace AoC_2021
     {
         static void Main(string[] args)
         {
-            var filePath = "Day1.txt";
-            var input = File.ReadAllLines(filePath).ToList();
-            var entries = new List<int>();
+            var input = File.ReadAllLines($"Day{DateTime.Now.Day}.txt").Select(int.Parse).ToList();
 
-            for (int i = 0; i < input.Count; i++)
-                entries.Add(int.Parse(input[i]));
+            int One() => Day_1_Part_1(input);
+            int Two() => Day_1_Part_2(input);
 
-            DayOnePartOne(entries);
-            DayOnePartTwo(entries);
-            DayTwoPartOne(entries);
-            DayTwoPartTwo(entries);
-
+            Console.WriteLine($"Part One: {One()}\nPart Two: {Two()}");
             Console.ReadLine();
         }
 
-        public static void DayTwoPartOne(List<int> entries)
+        public static int Day_2_Part_1(List<int> input)
         {
             int count = 0;
 
-            Console.WriteLine(count);
+            return count;
         }
 
-        public static void DayTwoPartTwo(List<int> entries)
+        public static int Day_2_Part_2(List<int> input)
         {
             int count = 0;
 
-            Console.WriteLine(count);
+            return count;
         }
 
-        public static void DayOnePartOne(List<int> entries)
+        public static int Day_1_Part_1(List<int> input)
         {
             int count = 0;
-            for (int i = 1; i < entries.Count(); i++)
+            for (int i = 1; i < input.Count(); i++)
             {
-                if (entries[i] > entries[i - 1])
+                if (input[i] > input[i - 1])
                     count++;
             }
-            Console.WriteLine(count);
+            return count;
         }
 
-        public static void DayOnePartTwo(List<int> entries)
+        public static int Day_1_Part_2(List<int> input)
         {
             int count = 0;
             int a = 0;
             int b = 0;
 
-            for (int i = 0; i < entries.Count(); i++)
+            for (int i = 0; i < input.Count(); i++)
             {
-                if (i + 2 < entries.Count())
-                    a = entries[i] + entries[i + 1] + entries[i + 2];
-                if (i + 3 < entries.Count())
-                    b = entries[i + 1] + entries[i + 2] + entries[i + 3];
+                if (i + 2 < input.Count())
+                    a = input[i] + input[i + 1] + input[i + 2];
+                if (i + 3 < input.Count())
+                    b = input[i + 1] + input[i + 2] + input[i + 3];
                 if (b > a)
                     count++;
             }
-            Console.WriteLine(count);
+            return count;
         }
     }
 }
