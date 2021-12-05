@@ -12,7 +12,8 @@ namespace AoC_2021
         {
             //var input = File.ReadAllLines($"Day{DateTime.Now.Day}.txt").Select(int.Parse).ToList();
 
-            var input = File.ReadAllLines($"Day{DateTime.Now.Day}.txt").ToList();
+            //var input = File.ReadAllLines($"Day{DateTime.Now.Day}.txt").ToList();
+            var input = File.ReadAllLines($"Day4.txt").ToList();
             //string[] input;
 
             //foreach (var e in entries)
@@ -24,7 +25,7 @@ namespace AoC_2021
             //int One() => Day_2_Part_2(input);
             //int Two() => Day_2_Part_2(input);
 
-            Day_4_Part_1(input);
+            Day_4_Part_2(input);
             //int Two() => Day_2_Part_2(input);
 
             //Console.WriteLine($"Part One: {One()}\nPart Two: {Two()}");
@@ -33,7 +34,7 @@ namespace AoC_2021
 
         public static void Day_4_Part_1(List<string> input)
         {
-            var boardArray = new int[5,5];
+            var boardArray = new int[5, 5];
 
             var numbers = input[0].Split(',').Select(int.Parse).ToList();
             int drawnNumbers = 5;
@@ -46,7 +47,7 @@ namespace AoC_2021
                     var board = input.GetRange(j, 5).ToArray();
                     var num = numbers.GetRange(0, drawnNumbers).ToArray();
 
-                    for(int k = 0; k < board.Length; k++)
+                    for (int k = 0; k < board.Length; k++)
                     {
                         var row = board[k].Split(' ').Where(x => x != "").ToArray();
                         boardArray[k, 0] = int.Parse(row[0]);
@@ -56,15 +57,14 @@ namespace AoC_2021
                         boardArray[k, 4] = int.Parse(row[4]);
                     }
 
-                    
-                    for(int l = 0; l < 5; l++)
+                    for (int l = 0; l < 5; l++)
                     {
-                        var countRow = num.Select(x => 
+                        var countRow = num.Select(x =>
                         x == boardArray[l, 0] |
                         x == boardArray[l, 1] |
                         x == boardArray[l, 2] |
                         x == boardArray[l, 3] |
-                        x == boardArray[l, 4] 
+                        x == boardArray[l, 4]
                         );
 
                         var countColumn = num.Select(x =>
@@ -75,17 +75,14 @@ namespace AoC_2021
                         x == boardArray[4, l]
                         );
 
-                        if(countRow.Count(x => x == true) == 5 | countColumn.Count(x => x == true) == 5)
+                        if (countRow.Count(x => x == true) == 5 | countColumn.Count(x => x == true) == 5)
                         {
                             var tempBoard = boardArray.Cast<int>().ToArray();
                             var unmarkedNumbers = tempBoard.Where(x => !num.Contains(x)).Sum();
                             var result = unmarkedNumbers * num.LastOrDefault();
                         }
-
                     }
-
                     j += 5;
-                    
                 }
                 drawnNumbers++;
             }
@@ -93,7 +90,87 @@ namespace AoC_2021
 
         public static void Day_4_Part_2(List<string> input)
         {
+            var boardArray = new int[5, 5];
 
+            var numbers = input[0].Split(',').Select(int.Parse).ToList();
+            int drawnNumbers = 5;
+            var lastBoard = new List<string>();
+
+            for (int i = 2; i < input.Count; i++) //2-6
+            {
+
+                for (int j = 2; j < input.Count; j++)
+                {
+                    var board = input.GetRange(j, 5).ToArray();
+                    var num = numbers.GetRange(0, drawnNumbers).ToArray();
+
+
+                    for (int k = 0; k < board.Length; k++)
+                    {
+                        var row = board[k].Split(' ').Where(x => x != "").ToArray();
+                        boardArray[k, 0] = int.Parse(row[0]);
+                        boardArray[k, 1] = int.Parse(row[1]);
+                        boardArray[k, 2] = int.Parse(row[2]);
+                        boardArray[k, 3] = int.Parse(row[3]);
+                        boardArray[k, 4] = int.Parse(row[4]);
+                    }
+
+                    for (int l = 0; l < 5; l++)
+                    {
+                        var countRow = num.Select(x =>
+                        x == boardArray[l, 0] |
+                        x == boardArray[l, 1] |
+                        x == boardArray[l, 2] |
+                        x == boardArray[l, 3] |
+                        x == boardArray[l, 4]
+                        );
+
+                        var countColumn = num.Select(x =>
+                        x == boardArray[0, l] |
+                        x == boardArray[1, l] |
+                        x == boardArray[2, l] |
+                        x == boardArray[3, l] |
+                        x == boardArray[4, l]
+                        );
+
+                        if (num.Last() == 13)
+                        {
+
+                        }
+
+                        if (countRow.Count(x => x == true) == 5 | countColumn.Count(x => x == true) == 5)
+                        {
+
+                            var tempBoard = boardArray.Cast<int>().ToArray();
+                            var unmarkedNumbers = tempBoard.Where(x => !num.Contains(x)).Sum();
+                            var result = unmarkedNumbers * num.LastOrDefault();
+
+                            string s = "";
+
+                            foreach (var t in tempBoard)
+                            {
+                                s += t + ",";
+                            }
+
+                            if (!lastBoard.Contains(s))
+                            {
+                                lastBoard.Add(s);
+                            }
+
+                            if (lastBoard.Count() == 100)
+                            {
+                                var r = lastBoard.Last().Split(",").Where(x => x != "").Select(int.Parse);
+                                var unmarkedNumbers2 = r.Where(x => !num.Contains(x)).Sum();
+                                var result2 = unmarkedNumbers * num.LastOrDefault();
+
+                            }
+                        }
+                    }
+                    j += 5;
+                }
+                drawnNumbers++;
+
+            }
         }
 
         public static int Day_3_Part_1(List<string> input)
@@ -109,7 +186,7 @@ namespace AoC_2021
                 var zero = input.Select(x => x.Substring(i, 1) == "0").Where(x => x == true).Count();
                 var one = input.Select(x => x.Substring(i, 1) == "1").Where(x => x == true).Count();
 
-                if(zero > one)
+                if (zero > one)
                 {
                     bits.Append("0");
                 }
@@ -131,7 +208,7 @@ namespace AoC_2021
                 }
             }
 
-            int gammaRate = Convert.ToInt32(bits.ToString(),2);
+            int gammaRate = Convert.ToInt32(bits.ToString(), 2);
             int epsilonRate = Convert.ToInt32(epsilonRateString.ToString(), 2);
             int power = gammaRate * epsilonRate;
 
@@ -143,13 +220,13 @@ namespace AoC_2021
             int length = input[0].Length;
             var ogr = input;
             var csr = input;
-            
+
             for (int j = 0; j < ogr.Count(); j++)
             {
                 for (int i = 0; i < length; i++)
                 {
 
-                    if(ogr.Count() > 1)
+                    if (ogr.Count() > 1)
                     {
                         var zero = ogr.Select(x => x.Substring(i, 1) == "0").Where(x => x == true).Count();
                         var one = ogr.Select(x => x.Substring(i, 1) == "1").Where(x => x == true).Count();
@@ -166,7 +243,7 @@ namespace AoC_2021
                         {
                             ogr = ogr.Where(x => x.Substring(i, 1) == "1").ToList();
                         }
-                    } 
+                    }
                 }
             }
 
@@ -174,7 +251,7 @@ namespace AoC_2021
             {
                 for (int i = 0; i < length; i++)
                 {
-                    if(csr.Count() > 1)
+                    if (csr.Count() > 1)
                     {
                         var zero = csr.Select(x => x.Substring(i, 1) == "0").Where(x => x == true).Count();
                         var one = csr.Select(x => x.Substring(i, 1) == "1").Where(x => x == true).Count();
@@ -213,7 +290,7 @@ namespace AoC_2021
             int aim = 0;
 
 
-            for(int i = 0; i < input.Count(); i++)
+            for (int i = 0; i < input.Count(); i++)
             {
                 var e = input[i].Split(' ');
                 if (e[0] == "forward")
